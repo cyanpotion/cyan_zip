@@ -1,10 +1,10 @@
 package com.xenoamess.cyan_zip.forecastingRangeEncoding;
 
 public class Transition {
-    public FenwickTree fenwickTrees[][] = new FenwickTree[Encoder.TRANSITION_NUM][260];
+    public FenwickTree fenwickTrees[][] = new FenwickTree[ForcastingRangeEncodingEncoder.TRANSITION_NUM][260];
 
     public Transition() {
-        for (int i = 0; i < Encoder.TRANSITION_NUM; i++) {
+        for (int i = 0; i < ForcastingRangeEncodingEncoder.TRANSITION_NUM; i++) {
             for (int j = 0; j < 260; j++) {
                 this.fenwickTrees[i][j] = new FenwickTree();
             }

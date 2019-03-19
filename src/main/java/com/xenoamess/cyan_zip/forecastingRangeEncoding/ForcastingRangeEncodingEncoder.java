@@ -4,14 +4,18 @@ import com.github.jinahya.bit.io.BitOutput;
 import com.github.jinahya.bit.io.DefaultBitOutput;
 import com.github.jinahya.bit.io.StreamByteOutput;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 
-public class Encoder implements AutoCloseable {
+public class ForcastingRangeEncodingEncoder {
     public static final int TRANSITION_NUM = 3;
 
     public long rawFileSize;
-    public InputStream inputStream;
+    public OutputStream outputStream;
+    public BitOutput bitOutput = null;
+
 
     public Transition transition;
 
@@ -28,8 +32,15 @@ public class Encoder implements AutoCloseable {
     public LinkedList<Integer> byteBuffer;
     public static final int OverTail = 64;
 
+    public int byteRead;
+    public int overTail;
+
     public void clear() {
-        byteBuffer = new LinkedList<>();
+        this.byteBuffer = new LinkedList<>();
+//        this.bitOutput = null;
+
+        this.byteRead = 0;
+        this.overTail = OverTail;
 
         rangeL = 0;
         rangeR = 255;
@@ -48,8 +59,8 @@ public class Encoder implements AutoCloseable {
         }
     }
 
-    public Encoder(InputStream inputStream, long rawFileSize) {
-        this.inputStream = inputStream;
+    public ForcastingRangeEncodingEncoder(long rawFileSize, OutputStream outputStream) {
+        this.outputStream = outputStream;
         this.rawFileSize = rawFileSize;
     }
 
@@ -138,37 +149,49 @@ public class Encoder implements AutoCloseable {
     }
 
 
-    public void encode(OutputStream outputStream) throws IOException {
-        BitOutput bitOutput = new DefaultBitOutput<>(new StreamByteOutput(outputStream));
-        bitOutput.writeLong(false, 64, rawFileSize);
+    public void encodeSingle(int currentByte) throws IOException {
+        if (bitOutput == null) {
+            bitOutput = new DefaultBitOutput<>(new StreamByteOutput(outputStream));
+            bitOutput.writeLong(false, 64, rawFileSize);
+            this.clear();
+        }
 
-        this.clear();
+        if (this.byteRead >= this.rawFileSize) {
+            return;
+        }
 
-        int byteRead = 0;
-
-        int currentByte;
-
-        int overTail = OverTail;
-        while (true) {
-            currentByte = inputStream.read();
-            if (currentByte == -1) {
-                if (overTail == 0) {
-                    break;
-                } else {
-                    overTail--;
-                    currentByte = 0;
-                }
-//                break;
-            }
-            byteRead++;
-
+        byteRead++;
 //            System.out.println("byteRead : " + byteRead);
-            if (byteRead % (1024 * 1024) == 0) {
-                System.out.println("byteRead : " + byteRead);
+        if (byteRead % (1024 * 1024) == 0) {
+            System.out.println("byteRead : " + byteRead);
+        }
+        this.calculateRange(bitOutput, currentByte);
+        this.preTransition();
+        this.updateTransition(currentByte);
+
+        if (byteRead == this.rawFileSize) {
+            for (int i = 0; i < this.overTail; i++) {
+                this.calculateRange(bitOutput, currentByte);
+                this.preTransition();
+                this.updateTransition(currentByte);
             }
-            this.calculateRange(bitOutput, currentByte);
-            this.preTransition();
-            this.updateTransition(currentByte);
+        }
+    }
+
+    public void encodeAll(InputStream inputStream) throws IOException {
+        if (bitOutput == null) {
+            bitOutput = new DefaultBitOutput<>(new StreamByteOutput(outputStream));
+            bitOutput.writeLong(false, 64, rawFileSize);
+            this.clear();
+        }
+
+
+        while (true) {
+            int currentByte = inputStream.read();
+            this.encodeSingle(currentByte);
+            if (this.byteRead >= this.rawFileSize) {
+                return;
+            }
         }
 //        while (this.rangeL != 0) {
 //            int output = (int) (rangeL >>> 63);
@@ -177,66 +200,5 @@ public class Encoder implements AutoCloseable {
 //        }
     }
 
-
-    @Override
-    public void close() throws Exception {
-        if (inputStream != null) {
-            inputStream.close();
-        }
-        this.clear();
-    }
-
-    public static final void Test(String filePath) throws IOException {
-        File inputFile = new File(filePath);
-        File outputFile = new File(filePath + ".zzz");
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outputFile));
-
-        Encoder encoder = new Encoder(bis, inputFile.length());
-        encoder.encode(bos);
-        bis.close();
-        bos.close();
-
-        Decoder.TestDecode(filePath + ".zzz");
-    }
-
-    public static void main(String args[]) {
-//        try {
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\1.doc");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-        try {
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\a.txt");
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\1.doc");
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\1.pdb");
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\test.txt");
-            Test("D:\\workspace\\cyan_zip\\tmp\\OpenJDK11U-jdk_x64_windows_hotspot_11.0.2_9.zip");
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\SourceHanSansK-Normal.7z");
-
-            //            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\480P_600K_136195722.mp4");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-//        try {
-//            com.xenoamess.cyan_zip.forecastingRangeEncoding.Test("D:\\workspace\\cyan_zip\\tmp\\1.pdb");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-
-
-//            File inputFile = new File("D:\\workspace\\cyan_zip\\tmp\\480P_600K_136195722.mp4");
-//            File outputFile = new File("D:\\workspace\\cyan_zip\\tmp\\480P_600K_136195722.z");
-//            File inputFile = new File("D:\\workspace\\cyan_zip\\tmp\\1115277.epub");
-//            File outputFile = new File("D:\\workspace\\cyan_zip\\tmp\\1115277.z");
-//            File inputFile = new File("D:\\workspace\\cyan_zip\\tmp\\a.txt");
-//            File outputFile = new File("D:\\workspace\\cyan_zip\\tmp\\a.z");
-
-    }
 
 }
