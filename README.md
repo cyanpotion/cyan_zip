@@ -6,7 +6,11 @@ It is still in development, and every part of it is not fully tested, so it is n
 # done:
 By now, we implemented an algorithm that is based on ranged encoding, the only difference is it used not the current proportion of some char to encode it, but use the predicted proportion of that char. the "predicted proportion" is calculated using the last 3 chars.
 
-You can see the details in package com.xenoamess.cyan_zip.forecastingRangeEncoding
+We also provided an InputStream class and an OutputStream class to make things easier.
+
+You can see the implementation details in package com.xenoamess.cyan_zip.forecastingRangeEncoding
+
+You can see the usecases in test folder.
 
 # todo:
 
