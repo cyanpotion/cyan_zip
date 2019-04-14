@@ -24,4 +24,4 @@ matrix:
     - os: linux
       jdk: openjdk-ea
 script: 
-  - ./mvnw.cmd clean package -Dmaven.javadoc.skip=false
+  - ./mvnw clean package -Dmaven.javadoc.skip=false
