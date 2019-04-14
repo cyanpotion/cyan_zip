@@ -11,19 +11,17 @@ env:
   global:
 matrix:
   include:
-    - os: windows
-      jdk: openjdk7
-    - os: windows
+    - os: linux
       jdk: openjdk8
-    - os: windows
+    - os: linux
       jdk: openjdk9
-    - os: windows
+    - os: linux
       jdk: openjdk10
-    - os: windows
+    - os: linux
       jdk: openjdk11
-    - os: windows
+    - os: linux
       jdk: openjdk12
-    - os: windows
+    - os: linux
       jdk: openjdk-ea
 script: 
   - ./mvnw.cmd clean package -Dmaven.javadoc.skip=false
