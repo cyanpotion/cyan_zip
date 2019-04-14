@@ -1,6 +1,7 @@
 # cyan_zip
 zip module of cyan_potion game engine.
 
+[![Build Status](https://travis-ci.org/cyanpotion/cyan_zip.svg?branch=master)](https://travis-ci.org/cyanpotion/cyan_zip)
 [![Build status](https://ci.appveyor.com/api/projects/status/wk3ojjock5dmcff4?svg=true)](https://ci.appveyor.com/project/XenoAmess/cyan-zip)
 
 It is still in development, and every part of it is not fully tested, so it is not recommend to be used in your own project for now.
