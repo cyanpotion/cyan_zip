@@ -1,6 +1,8 @@
 language: java
+sudo: true
 dist: trusty
-sudo: false
+before_install:
+  - chmod +x mvnw
 git:
   depth: 1
 cache:
