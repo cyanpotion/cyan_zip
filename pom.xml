@@ -23,8 +23,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.github.jinahya/bit-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.github.jinahya</groupId>
             <artifactId>bit-io</artifactId>
