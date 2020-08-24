@@ -55,7 +55,7 @@ public class Test {
 
     }
 
-    public static final void TestEncode(String filePath) throws IOException {
+    public static void TestEncode(String filePath) throws IOException {
         File inputFile = new File(filePath);
         File outputFile = new File(filePath + ".zzz");
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
@@ -69,7 +69,7 @@ public class Test {
 //        TestDecode(filePath + ".zzz");
     }
 
-    public static final void TestDecode(String filePath) throws IOException {
+    public static void TestDecode(String filePath) throws IOException {
         File inputFile = new File(filePath);
         File outputFile = new File(filePath + ".un");
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
@@ -82,7 +82,7 @@ public class Test {
     }
 
 
-    public static final void TestEncode2(String filePath) throws IOException {
+    public static void TestEncode2(String filePath) throws IOException {
         File inputFile = new File(filePath);
         File outputFile = new File(filePath + ".zzz");
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
@@ -102,7 +102,7 @@ public class Test {
 //        TestDecode2(filePath + ".zzz");
     }
 
-    public static final void TestDecode2(String filePath) throws IOException {
+    public static void TestDecode2(String filePath) throws IOException {
         File inputFile = new File(filePath);
         File outputFile = new File(filePath + ".un");
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inputFile));
@@ -120,7 +120,7 @@ public class Test {
         bos.close();
     }
 
-    public static final void Test(String filePath) throws IOException {
+    public static void Test(String filePath) throws IOException {
         TestEncode(filePath);
         TestDecode(filePath + ".zzz");
         TestEncode2(filePath + ".zzz.un");
