@@ -145,7 +145,7 @@ public class ForcastingRangeEncodingEncoder {
 
     public void encodeSingle(int currentByte) throws IOException {
         if (bitOutput == null) {
-            bitOutput = new DefaultBitOutput<>(new StreamByteOutput(outputStream));
+            bitOutput = new DefaultBitOutput(new StreamByteOutput(outputStream));
             bitOutput.writeLong(false, 64, rawFileSize);
             this.clear();
         }
@@ -173,7 +173,7 @@ public class ForcastingRangeEncodingEncoder {
 
     public void encodeAll(InputStream inputStream) throws IOException {
         if (bitOutput == null) {
-            bitOutput = new DefaultBitOutput<>(new StreamByteOutput(outputStream));
+            bitOutput = new DefaultBitOutput(new StreamByteOutput(outputStream));
             bitOutput.writeLong(false, 64, rawFileSize);
             this.clear();
         }
