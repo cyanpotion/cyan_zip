@@ -11,7 +11,7 @@
         <version>0.163.1</version>
     </parent>
     <properties>
-        <bit-io.version>1.4.1</bit-io.version>
+        <bit-io.version>2.0.5</bit-io.version>
     </properties>
 
     <dependencies>
