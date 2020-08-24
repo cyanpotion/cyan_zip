@@ -1,12 +1,13 @@
-﻿/jre/
-/bin/
-/out/
-/target/
+﻿/jre
+/bin
+/out
+/target
+/logs
 
 */target
 *.iml
 /.idea
-*.class
+
 target/
 .project
 .settings/
@@ -29,7 +30,6 @@ target/
 *.war
 *.nar
 *.ear
-*.zip
 *.tar.gz
 *.rar
 
@@ -37,20 +37,4 @@ target/
 hs_err_pid*
 replay_pid*
 
-
-# project settings
-/lwjgl3-master/
-!/src/main/resources
-/src/main/resources/*
-!/src/main/resources/settings/
-!/src/main/resources/text/
-/steam_appid.txt
-/run_build.lnk
-/test*
-/src/main/java/org/lwjgl/demo
-/log.txt
-
-/tmp
-/logs
-*.log
-*.MF
+pom.xml.versionsBackup
