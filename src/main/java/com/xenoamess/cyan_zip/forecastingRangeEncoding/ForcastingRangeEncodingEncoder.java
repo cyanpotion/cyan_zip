@@ -86,9 +86,9 @@ public class ForcastingRangeEncodingEncoder {
         int byte2 = byteBuffer.size() >= 2 ? byteBuffer.get(byteBuffer.size() - 2) : 0;
         int byte1 = byteBuffer.size() >= 1 ? byteBuffer.get(byteBuffer.size() - 1) : 0;
         long transitionSize = 0
-                + transition.getsum(0, byte1, 255)
-                + transition.getsum(1, byte2, 255)
-                + transition.getsum(2, byte3, 255);
+                + transition.getSum(0, byte1, 255)
+                + transition.getSum(1, byte2, 255)
+                + transition.getSum(2, byte3, 255);
 
         while (Long.compareUnsigned(Long.divideUnsigned(nowRange, transitionSize), RangeTime) < 0) {
             int output = (int) (rangeL >>> 63);
@@ -104,16 +104,16 @@ public class ForcastingRangeEncodingEncoder {
         long seg = Long.divideUnsigned(nowRange, transitionSize);
         long tmpnum;
         tmpnum = 0
-                + this.transition.getsum(0, byte1, currentByte - 1)
-                + this.transition.getsum(1, byte2, currentByte - 1)
-                + this.transition.getsum(2, byte3, currentByte - 1);
+                + this.transition.getSum(0, byte1, currentByte - 1)
+                + this.transition.getSum(1, byte2, currentByte - 1)
+                + this.transition.getSum(2, byte3, currentByte - 1);
 
         long newRangeL = rangeL + tmpnum * seg;
 
         tmpnum = 0
-                + this.transition.getsum(0, byte1, currentByte)
-                + this.transition.getsum(1, byte2, currentByte)
-                + this.transition.getsum(2, byte3, currentByte);
+                + this.transition.getSum(0, byte1, currentByte)
+                + this.transition.getSum(1, byte2, currentByte)
+                + this.transition.getSum(2, byte3, currentByte);
 
         long newRangeR = rangeL + tmpnum * seg;
 
@@ -161,7 +161,6 @@ public class ForcastingRangeEncodingEncoder {
         }
 
         byteRead++;
-//            System.out.println("byteRead : " + byteRead);
         if (byteRead % (1024 * 1024) == 0) {
             System.out.println("byteRead : " + byteRead);
         }

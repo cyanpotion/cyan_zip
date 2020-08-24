@@ -9,7 +9,7 @@ public class ForcastingRangeEncodingOutputStream extends OutputStream {
 
     /**
      * @param rawFileSize  size of the original file.
-     * @param outputStream
+     * @param outputStream outputStream
      */
     public ForcastingRangeEncodingOutputStream(long rawFileSize, OutputStream outputStream) {
         this.outputStream = outputStream;

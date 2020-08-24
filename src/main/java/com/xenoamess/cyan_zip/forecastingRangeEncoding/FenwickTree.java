@@ -2,9 +2,9 @@ package com.xenoamess.cyan_zip.forecastingRangeEncoding;
 
 public class FenwickTree {
     public long sum;
-    public long a[];
+    public long[] a;
 
-    public static final int lowbit(int x) {
+    public static int lowbit(int x) {
         return x & (-x);
     }
 
@@ -54,17 +54,20 @@ public class FenwickTree {
     }
 
 
-    public long getsum(int x) {
+    public long getSum(int x) {
         x++;
 
-        if (x == 0) return 0;
+        if (x == 0) {
+            return 0;
+        }
         long res = 0;
-        for (int i = x; i != 0; i -= lowbit(i))
+        for (int i = x; i != 0; i -= lowbit(i)) {
             res += a[i];
+        }
         return res;
     }
 
     public long get(int x) {
-        return this.getsum(x) - this.getsum(x - 1);
+        return this.getSum(x) - this.getSum(x - 1);
     }
 }

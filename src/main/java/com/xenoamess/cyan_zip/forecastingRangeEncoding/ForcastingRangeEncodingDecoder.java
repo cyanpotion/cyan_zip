@@ -35,8 +35,7 @@ public class ForcastingRangeEncodingDecoder {
         int res;
         try {
             res = this.bitInput.readBoolean() ? 1 : 0;
-        } catch (IOException e) {
-//            e.printStackTrace();
+        } catch (IOException ignored) {
             res = 0;
             inputOver = true;
         }
@@ -94,9 +93,9 @@ public class ForcastingRangeEncodingDecoder {
         int byte2 = byteBuffer.size() >= 2 ? byteBuffer.get(byteBuffer.size() - 2) : 0;
         int byte1 = byteBuffer.size() >= 1 ? byteBuffer.get(byteBuffer.size() - 1) : 0;
         long transitionSize = 0
-                + transition.getsum(0, byte1, 255)
-                + transition.getsum(1, byte2, 255)
-                + transition.getsum(2, byte3, 255);
+                + transition.getSum(0, byte1, 255)
+                + transition.getSum(1, byte2, 255)
+                + transition.getSum(2, byte3, 255);
 
 
         while (Long.compareUnsigned(Long.divideUnsigned(nowRange, transitionSize), ForcastingRangeEncodingEncoder.RangeTime) < 0) {
@@ -111,7 +110,7 @@ public class ForcastingRangeEncodingDecoder {
         }
 
         long seg = Long.divideUnsigned(nowRange, transitionSize);
-        long tmpnum;
+        long tempNum;
 
 
         int l = 0;
@@ -122,11 +121,11 @@ public class ForcastingRangeEncodingDecoder {
                 break;
             }
             mid = ((l + r) >>> 1);
-            tmpnum = 0
-                    + this.transition.getsum(0, byte1, mid - 1)
-                    + this.transition.getsum(1, byte2, mid - 1)
-                    + this.transition.getsum(2, byte3, mid - 1);
-            long tmpRangeL = rangeL + tmpnum * seg;
+            tempNum = 0
+                    + this.transition.getSum(0, byte1, mid - 1)
+                    + this.transition.getSum(1, byte2, mid - 1)
+                    + this.transition.getSum(2, byte3, mid - 1);
+            long tmpRangeL = rangeL + tempNum * seg;
             if (Long.compareUnsigned(tmpRangeL, rangeN) > 0) {
                 r = mid;
             } else {
@@ -136,19 +135,19 @@ public class ForcastingRangeEncodingDecoder {
         mid = l;
 
 
-        tmpnum = 0
-                + this.transition.getsum(0, byte1, mid - 1)
-                + this.transition.getsum(1, byte2, mid - 1)
-                + this.transition.getsum(2, byte3, mid - 1);
+        tempNum = 0
+                + this.transition.getSum(0, byte1, mid - 1)
+                + this.transition.getSum(1, byte2, mid - 1)
+                + this.transition.getSum(2, byte3, mid - 1);
 
-        long newRangeL = rangeL + tmpnum * seg;
+        long newRangeL = rangeL + tempNum * seg;
 
-        tmpnum = 0
-                + this.transition.getsum(0, byte1, mid)
-                + this.transition.getsum(1, byte2, mid)
-                + this.transition.getsum(2, byte3, mid);
+        tempNum = 0
+                + this.transition.getSum(0, byte1, mid)
+                + this.transition.getSum(1, byte2, mid)
+                + this.transition.getSum(2, byte3, mid);
 
-        long newRangeR = rangeL + tmpnum * seg;
+        long newRangeR = rangeL + tempNum * seg;
 
         assert (Long.compareUnsigned(newRangeL, rangeL) > 0);
         assert (Long.compareUnsigned(newRangeR, rangeR) < 0);

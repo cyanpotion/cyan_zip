@@ -1,7 +1,7 @@
 package com.xenoamess.cyan_zip.forecastingRangeEncoding;
 
 public class Transition {
-    public FenwickTree fenwickTrees[][] = new FenwickTree[ForcastingRangeEncodingEncoder.TRANSITION_NUM][260];
+    public FenwickTree[][] fenwickTrees = new FenwickTree[ForcastingRangeEncodingEncoder.TRANSITION_NUM][260];
 
     public Transition() {
         for (int i = 0; i < ForcastingRangeEncodingEncoder.TRANSITION_NUM; i++) {
@@ -31,8 +31,8 @@ public class Transition {
         return this.fenwickTrees[i][j].get(k);
     }
 
-    public long getsum(int i, int j, int k) {
-        return this.fenwickTrees[i][j].getsum(k);
+    public long getSum(int i, int j, int k) {
+        return this.fenwickTrees[i][j].getSum(k);
     }
 
 }
