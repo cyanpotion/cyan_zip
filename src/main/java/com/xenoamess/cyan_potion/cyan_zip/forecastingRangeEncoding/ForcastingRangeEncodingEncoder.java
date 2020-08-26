@@ -29,13 +29,12 @@ public class ForcastingRangeEncodingEncoder {
 
     protected long rangeL;
     protected long rangeR;
-    /** Constant <code>MaxLong=Long.parseUnsignedLong("18446744073709551615")</code> */
-    protected static final long MaxLong = Long.parseUnsignedLong("18446744073709551615");
-    /** Constant <code>ByteBufferMax=1L << 20</code> */
-    protected static final long ByteBufferMax = 1L << 20;
-    /** Constant <code>RangeTime=1L << 15</code> */
+
+    /** Constant <code>ByteBufferMax=2^20</code> */
+    protected static final int ByteBufferMax = 1 << 20;
+    /** Constant <code>RangeTime=2^15</code> */
     protected static final long RangeTime = 1L << 15;
-    /** Constant <code>MultiTime=1 << 4</code> */
+    /** Constant <code>MultiTime=2^4</code> */
     protected static final int MultiTime = 1 << 4;
 
     protected LinkedList<Integer> byteBuffer;
