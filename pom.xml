@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>cyan_zip</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <parent>
         <groupId>com.xenoamess.cyan_potion</groupId>
-        <artifactId>project</artifactId>
-        <version>0.163.1</version>
+        <artifactId>parent</artifactId>
+        <version>0.167.1</version>
     </parent>
     <properties>
         <bit-io.version>2.0.5</bit-io.version>

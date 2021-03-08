@@ -8,7 +8,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 
+/**
+ * <p>ForcastingRangeEncodingEncoder class.</p>
+ *
+ * @author XenoAmess
+ * @version 0.1.1
+ */
 public class ForcastingRangeEncodingEncoder {
+    /** Constant <code>TRANSITION_NUM=3</code> */
     protected static final int TRANSITION_NUM = 3;
 
     protected long rawFileSize;
@@ -22,17 +29,24 @@ public class ForcastingRangeEncodingEncoder {
 
     protected long rangeL;
     protected long rangeR;
-    protected static final long MaxLong = Long.parseUnsignedLong("18446744073709551615");
-    protected static final long ByteBufferMax = 1L << 20;
+
+    /** Constant <code>ByteBufferMax=2^20</code> */
+    protected static final int ByteBufferMax = 1 << 20;
+    /** Constant <code>RangeTime=2^15</code> */
     protected static final long RangeTime = 1L << 15;
+    /** Constant <code>MultiTime=2^4</code> */
     protected static final int MultiTime = 1 << 4;
 
     protected LinkedList<Integer> byteBuffer;
+    /** Constant <code>OverTail=64</code> */
     protected static final int OverTail = 64;
 
     protected int byteRead;
     protected int overTail;
 
+    /**
+     * <p>clear.</p>
+     */
     public void clear() {
         this.byteBuffer = new LinkedList<>();
 //        this.bitOutput = null;
@@ -57,11 +71,20 @@ public class ForcastingRangeEncodingEncoder {
         }
     }
 
+    /**
+     * <p>Constructor for ForcastingRangeEncodingEncoder.</p>
+     *
+     * @param rawFileSize a long.
+     * @param outputStream a {@link java.io.OutputStream} object.
+     */
     public ForcastingRangeEncodingEncoder(long rawFileSize, OutputStream outputStream) {
         this.outputStream = outputStream;
         this.rawFileSize = rawFileSize;
     }
 
+    /**
+     * <p>preTransition.</p>
+     */
     public void preTransition() {
         if (this.byteBuffer.size() > ByteBufferMax) {
             int byte3 = byteBuffer.getFirst();
@@ -77,6 +100,13 @@ public class ForcastingRangeEncodingEncoder {
     }
 
 
+    /**
+     * <p>calculateRange.</p>
+     *
+     * @param bitOutput a {@link com.github.jinahya.bit.io.BitOutput} object.
+     * @param currentByte a int.
+     * @throws java.io.IOException if any.
+     */
     public void calculateRange(BitOutput bitOutput, int currentByte) throws IOException {
         long nowRange;
         nowRange = rangeR - rangeL;
@@ -118,6 +148,11 @@ public class ForcastingRangeEncodingEncoder {
         this.rangeR = newRangeR;
     }
 
+    /**
+     * <p>updateTransition.</p>
+     *
+     * @param currentByte a int.
+     */
     public void updateTransition(int currentByte) {
 
         if (this.byteBuffer.size() >= 3) {
@@ -143,6 +178,12 @@ public class ForcastingRangeEncodingEncoder {
     }
 
 
+    /**
+     * <p>encodeSingle.</p>
+     *
+     * @param currentByte a int.
+     * @throws java.io.IOException if any.
+     */
     public void encodeSingle(int currentByte) throws IOException {
         if (bitOutput == null) {
             bitOutput = new DefaultBitOutput(new StreamByteOutput(outputStream));
@@ -171,6 +212,12 @@ public class ForcastingRangeEncodingEncoder {
         }
     }
 
+    /**
+     * <p>encodeAll.</p>
+     *
+     * @param inputStream a {@link java.io.InputStream} object.
+     * @throws java.io.IOException if any.
+     */
     public void encodeAll(InputStream inputStream) throws IOException {
         if (bitOutput == null) {
             bitOutput = new DefaultBitOutput(new StreamByteOutput(outputStream));

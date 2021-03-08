@@ -8,6 +8,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 
+/**
+ * <p>ForcastingRangeEncodingDecoder class.</p>
+ *
+ * @author XenoAmess
+ * @version 0.1.1
+ */
 public class ForcastingRangeEncodingDecoder {
     protected long rawFileSize = -1;
     protected long outputFileSize = 0;
@@ -25,6 +31,11 @@ public class ForcastingRangeEncodingDecoder {
 //    int bitRead = 0;
 
 
+    /**
+     * <p>readBit.</p>
+     *
+     * @return a int.
+     */
     public int readBit() {
 //        bitRead++;
 //        if (bitRead % (8 * 1024 * 1024) == 0) {
@@ -42,6 +53,9 @@ public class ForcastingRangeEncodingDecoder {
     }
 
 
+    /**
+     * <p>clear.</p>
+     */
     public void clear() {
         this.inputOver = false;
         this.outputFileSize = 0;
@@ -66,10 +80,18 @@ public class ForcastingRangeEncodingDecoder {
         }
     }
 
+    /**
+     * <p>Constructor for ForcastingRangeEncodingDecoder.</p>
+     *
+     * @param inputStream a {@link java.io.InputStream} object.
+     */
     public ForcastingRangeEncodingDecoder(InputStream inputStream) {
         this.bitInput = new DefaultBitInput(new StreamByteInput(inputStream));
     }
 
+    /**
+     * <p>preTransition.</p>
+     */
     public void preTransition() {
         if (this.byteBuffer.size() > ForcastingRangeEncodingEncoder.ByteBufferMax) {
             int byte3 = byteBuffer.getFirst();
@@ -88,6 +110,12 @@ public class ForcastingRangeEncodingDecoder {
     }
 
 
+    /**
+     * <p>calculateByte.</p>
+     *
+     * @return a int.
+     * @throws java.io.IOException if any.
+     */
     public int calculateByte() throws IOException {
         long nowRange;
         nowRange = rangeR - rangeL;
@@ -156,6 +184,11 @@ public class ForcastingRangeEncodingDecoder {
         return mid;
     }
 
+    /**
+     * <p>updateTransition.</p>
+     *
+     * @param currentByte a int.
+     */
     public void updateTransition(int currentByte) {
 
         if (this.byteBuffer.size() >= 3) {
@@ -184,6 +217,12 @@ public class ForcastingRangeEncodingDecoder {
         this.byteBuffer.addLast(currentByte);
     }
 
+    /**
+     * <p>decodeSingle.</p>
+     *
+     * @return a int.
+     * @throws java.io.IOException if any.
+     */
     public int decodeSingle() throws IOException {
         if (rawFileSize == -1) {
             rawFileSize = bitInput.readLong(false, 64);
@@ -201,6 +240,12 @@ public class ForcastingRangeEncodingDecoder {
     }
 
 
+    /**
+     * <p>decodeAll.</p>
+     *
+     * @param outputStream a {@link java.io.OutputStream} object.
+     * @throws java.io.IOException if any.
+     */
     public void decodeAll(OutputStream outputStream) throws IOException {
         if (rawFileSize == -1) {
             rawFileSize = bitInput.readLong(false, 64);
